@@ -11,6 +11,7 @@ env:
   ASPNETCORE_URLS: 'http://localhost:5000'
   DIR_WEBAPP: './ConversorDistancias'
   DIR_TESTS: './ConversorDistancias.Specs'
+  DLL_PROJECT_TESTS: 'ConversorDistancias.Specs.dll'
   PATH_REPORT_TESTS: './ConversorDistancias.Specs/Releases'
   WEBAPP_NAME: 'groffeconversordistancias'
   
@@ -43,7 +44,7 @@ jobs:
       if: always()
       run: |
         cd ${{ env.PATH_REPORT_TESTS }}
-        livingdoc test-assembly Temperatura.Specs.dll --project-language pt-BR -t TestExecution.json
+        livingdoc test-assembly ${{ env.DLL_PROJECT_TESTS }} --project-language pt-BR -t TestExecution.json
     #- name: Upload do Report de Testes como Artifact
     #  uses: actions/upload-artifact@v2.3.1
     #  if: always()
