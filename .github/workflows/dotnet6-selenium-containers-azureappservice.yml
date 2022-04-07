@@ -42,7 +42,7 @@ jobs:
     - name: Gerar relatório HTML com o resultado dos testes usando o LivingDoc (SpecFlow)
       if: always()
       run: |
-        cd ./Releases
+        cd ${{ env.PATH_REPORT_TESTS }}
         livingdoc test-assembly Temperatura.Specs.dll --project-language pt-BR -t TestExecution.json
     #- name: Upload do Report de Testes como Artifact
     #  uses: actions/upload-artifact@v2.3.1
