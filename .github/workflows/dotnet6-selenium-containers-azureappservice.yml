@@ -11,7 +11,7 @@ env:
   ASPNETCORE_URLS: 'http://localhost:5000'
   DIR_WEBAPP: './ConversorDistancias'
   DIR_TESTS: './ConversorDistancias.Specs'
-  PATH_REPORT_TESTS: './apicontagem-loadtests.html'
+  PATH_REPORT_TESTS: './ConversorDistancias.Specs/Releases'
   WEBAPP_NAME: 'groffeconversordistancias'
   
 jobs:
@@ -36,6 +36,22 @@ jobs:
       run: |
         cd ${{ env.DIR_TESTS }}
         dotnet test -c Release -o Releases
+    - name: Instalar o LivingDoc (SpecFlow)
+      if: always()
+      run: dotnet tool install --global SpecFlow.Plus.LivingDoc.CLI
+    - name: Gerar relatório HTML com o resultado dos testes usando o LivingDoc (SpecFlow)
+      if: always()
+      run: |
+        cd ./Releases
+        livingdoc test-assembly Temperatura.Specs.dll --project-language pt-BR -t TestExecution.json
+    #- name: Upload do Report de Testes como Artifact
+    #  uses: actions/upload-artifact@v2.3.1
+    #  if: always()
+    #  with:
+    #    name: resultado-execucao-testes
+    #    path: ${{ env.PATH_REPORT_TESTS }}
+    #    retention-days: 30
+
     #- name: Executar testes de carga com k6
     #  run: k6 run ${{ env.TEST_SCRIPTS }}
     #- name: Listar arquivo gerado após execução dos testes
