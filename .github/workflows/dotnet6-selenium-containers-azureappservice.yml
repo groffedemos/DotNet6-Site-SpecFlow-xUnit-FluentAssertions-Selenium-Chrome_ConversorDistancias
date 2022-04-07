@@ -28,8 +28,13 @@ jobs:
         docker build . --file Dockerfile --tag ${{ env.IMAGE_DOCKERHUB }}:latest      
     - name: Criar container para testes
       run: |
-        docker run --name sitetests -p 5000:80 -d ${{ env.IMAGE_DOCKERHUB }}:latest
+        docker run --name sitetests -p 1234:80 -d ${{ env.IMAGE_DOCKERHUB }}:latest
         docker container ls
+    - name: Testes com Selenium WebDriver + Chrome Driver
+      env:
+        UrlConversaoDistancias: http://localhost:1234
+      run: |
+        dotnet test -c Release -o Releases
     #- name: Executar testes de carga com k6
     #  run: k6 run ${{ env.TEST_SCRIPTS }}
     #- name: Listar arquivo gerado após execução dos testes
