@@ -34,6 +34,7 @@ jobs:
       env:
         UrlConversaoDistancias: http://localhost:1234
       run: |
+        cd ${{ env.DIR_TESTS }}
         dotnet test -c Release -o Releases
     #- name: Executar testes de carga com k6
     #  run: k6 run ${{ env.TEST_SCRIPTS }}
