@@ -73,7 +73,7 @@ jobs:
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
     - name: Azure WebApp - Deployment da Aplicacao
-      uses: Azure/webapps-deploy@v2.2.3
+      uses: Azure/webapps-deploy@v2
       with:
         app-name: ${{ env.WEBAPP_NAME }}
         images: '${{ env.IMAGE_DOCKERHUB }}:${{ github.run_number }}'
