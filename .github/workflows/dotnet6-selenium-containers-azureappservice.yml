@@ -12,7 +12,7 @@ env:
   DIR_WEBAPP: './ConversorDistancias'
   DIR_TESTS: './ConversorDistancias.Specs'
   DLL_PROJECT_TESTS: 'ConversorDistancias.Specs.dll'
-  PATH_REPORT_TESTS: './ConversorDistancias.Specs/Releases'
+  DIR_REPORT_TESTS: './ConversorDistancias.Specs/Releases'
   WEBAPP_NAME: 'groffeconversordistancias'
   
 jobs:
@@ -22,7 +22,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3.0.0
     - name: Build de imagem
       run: |
         cd ${{ env.DIR_WEBAPP }}
@@ -43,15 +43,15 @@ jobs:
     - name: Gerar relatório HTML com o resultado dos testes usando o LivingDoc (SpecFlow)
       if: always()
       run: |
-        cd ${{ env.PATH_REPORT_TESTS }}
+        cd ${{ env.DIR_REPORT_TESTS }}
         livingdoc test-assembly ${{ env.DLL_PROJECT_TESTS }} --project-language pt-BR -t TestExecution.json
-    #- name: Upload do Report de Testes como Artifact
-    #  uses: actions/upload-artifact@v2.3.1
-    #  if: always()
-    #  with:
-    #    name: resultado-execucao-testes
-    #    path: ${{ env.PATH_REPORT_TESTS }}
-    #    retention-days: 30
+    - name: Upload do Report de Testes como Artifact
+      uses: actions/upload-artifact@3.0.0
+      if: always()
+      with:
+        name: results-specflow
+        path: ${{ env.DIR_REPORT_TESTS }}/LivingDoc.html
+        retention-days: 30
 
     #- name: Executar testes de carga com k6
     #  run: k6 run ${{ env.TEST_SCRIPTS }}
