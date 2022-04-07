@@ -13,7 +13,7 @@ env:
   DIR_TESTS: './ConversorDistancias.Specs'
   DLL_PROJECT_TESTS: 'ConversorDistancias.Specs.dll'
   DIR_REPORT_TESTS: './ConversorDistancias.Specs/Releases'
-  WEBAPP_NAME: 'groffeconversordistancias'
+  WEBAPP_NAME: 'groffedistancias'
   
 jobs:
 
@@ -61,3 +61,19 @@ jobs:
       run: |
         docker tag ${{ env.IMAGE_DOCKERHUB }}:latest ${{ env.IMAGE_DOCKERHUB }}:$GITHUB_RUN_NUMBER
         docker push --all-tags ${{ env.IMAGE_DOCKERHUB }}
+
+  deployment:
+    needs: [build-tests-push]
+    
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Azure Login - Conectando com Credenciais no Azure
+      uses: Azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+    - name: Azure WebApp - Deployment da Aplicacao
+      uses: Azure/webapps-deploy@v2.2.3
+      with:
+        app-name: ${{ env.WEBAPP_NAME }}
+        images: '${{ env.IMAGE_DOCKERHUB }}:${{ github.run_number }}'
