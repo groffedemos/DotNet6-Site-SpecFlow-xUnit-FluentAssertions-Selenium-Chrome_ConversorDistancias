@@ -25,8 +25,8 @@ public class HomeController : Controller
         if (ModelState.IsValid)
         {
             // FIXME: Simulação de falha
-            distancias.DistanciaKm = distancias.DistanciaMilhas * 1.609;
-            //distancias.DistanciaKm = Math.Round(distancias.DistanciaMilhas!.Value * 1.609, 3);
+            //distancias.DistanciaKm = distancias.DistanciaMilhas * 1.609;
+            distancias.DistanciaKm = Math.Round(distancias.DistanciaMilhas!.Value * 1.609, 3);
             _logger.LogInformation(
                 $"{distancias.DistanciaMilhas} milhas = {distancias.DistanciaKm} Km");
             return View(distancias);
